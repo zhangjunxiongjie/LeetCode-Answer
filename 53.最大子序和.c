@@ -3,8 +3,13 @@
  *
  * [53] 最大子序和
  */
+int maxSubArray(int* nums, int numsSize){
 
 
+}
+
+/*
+// 这个实现方法暂缺乏可行性，先暂置于此 
 int maxSubArray(int* nums, int numsSize){
     int number, result;
     int tailsum = 0, headsum = 0;
