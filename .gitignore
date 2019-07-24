@@ -1,7 +1,7 @@
 #Executable
 
 # ¹ıÂË vs code ÅäÖÃÎÄ¼ş
-*.vscode
+.vscode/
 
 *.exe
 
