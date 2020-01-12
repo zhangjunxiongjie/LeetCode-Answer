@@ -76,6 +76,20 @@ public:
 
     }
 
+    // 判断位置是否可行
+    bool judge(vector<int>& cache, int n, int may)
+    {
+        for (size_t i = 0; i < n; i++)
+        {
+            int impose1 = cache[i] - (n - i);
+            int impose2 = cache[i] + (n - i);
+            if (cache[i] == may || impose1 == may || impose2 == may)
+            {
+                return false;
+            }            
+        }
+        return true;
+    }
 
     vector<vector<string>> solveNQueens(int n) {
 	    vector<vector<string>>& result = *new vector<vector<string>>;
@@ -99,7 +113,8 @@ public:
                 now--;
             }
 
-            // 依然存在每次都需要计算限制条件的问题！！可优化。
+            /*
+            // 此处计算限制位置。
             impose.clear();
             for (int i = 0; i < n; i++)
             {
@@ -120,11 +135,12 @@ public:
                     impose[impose2] = 1;
                 }
             }
+            */
 
             int sign = cache.at(now) + 1;
             for (; sign < n; sign++)
             {
-                if (impose.at(sign) == 0)
+                if (judge(cache, now, sign))
                 {
                     cache.at(now) = sign;
                     now++;
