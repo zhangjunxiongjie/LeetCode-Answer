@@ -19,18 +19,14 @@ public:
 
     bool hasPathSum(TreeNode* root, int sum) {
         bool result = false;
-        if (root == nullptr)
-        {
-            return false;
-        }
 
-        stack<TreeNode*> heap; // 队列
+        stack<TreeNode*> heap; // 堆栈
         TreeNode* move = root; // 根节点、
         TreeNode* lastnode = nullptr; // 上一个节点。
-        int num = 0;
+        int num = 0; // 所求和。
         while ((!heap.empty() || move != nullptr) && result == false)
         {
-            // 后序遍历。
+            // 队列实现二叉树的后序遍历。
             while (move)
             {
                 heap.push(move);
@@ -39,14 +35,12 @@ public:
             }
             
             move = heap.top();
-
             if (move->right == nullptr || move->right == lastnode)
             {
                 if (move->right == nullptr && move->left == nullptr && num == sum)
                 {
                     result = true;
                 }
-                
                 num -= move->val;
                 heap.pop();
                 lastnode = move;
@@ -57,7 +51,6 @@ public:
                 lastnode = move;
                 move = move->right;    
             }
-            
         }
         
         return result;
