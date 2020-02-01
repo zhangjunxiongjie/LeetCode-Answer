@@ -15,6 +15,24 @@
  */
 class Solution {
 public:
+    bool hasCycle(ListNode *head) {
+        if (head == nullptr){
+            return false;
+        }
+        
+        // 使用快慢指针判断链表是否有环。
+        ListNode *p = head, *p2 = head;
+        while (p2->next != nullptr && p2->next->next != nullptr) {
+            p = p->next;
+            p2 = p2->next->next;
+            if (p == p2) { // 有环才会出现慢指针追上快指针的情况
+                return true;
+            }
+        }
+
+        return false;
+    }
+    /*
     // 有待优化。
     bool hasCycle(ListNode *head) {
         ListNode* cache = head;
@@ -47,6 +65,7 @@ public:
         }
         return false;
     }
+    */
 };
 // @lc code=end
 
