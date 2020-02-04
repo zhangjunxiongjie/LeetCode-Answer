@@ -7,24 +7,37 @@
 // @lc code=start
 class Solution {
 public:
-    // 可以尝试先排序再查找，这个题完全没做出来完全是靠 map 的 find 实现。
-    // 重新想一个可行的时间复杂度不高的实现。
-    bool containsDuplicate(vector<int>& nums) {
-        map<int, int> assistant;
+    // 利用哈希的思想，将元素根据基值分为100堆，可以高效地进行查找。
+    // 时间复杂度依然很高。
+    bool containsDuplicate(vector<int>& nums){
+        map<int, vector<int>> assistant; // 建立基值哈希表。
         for (auto iter = nums.begin(); iter != nums.end(); iter++)
         {
-            auto p = assistant.find(*iter);
-            if (p == assistant.end())
+            int basecount = (*iter) % 100; // 取基值。 
+            auto mapiter = assistant.find(basecount);
+            if (mapiter == assistant.end()) // 未找到 
             {
-                assistant.insert(pair<int, int>(*iter, 1));
+                vector<int> buffer;
+                buffer.push_back(*iter);
+
+                assistant.insert(map<int, vector<int>>::value_type(basecount, buffer));
             }
-            else
+            else // 如果找到了。
             {
-                return true;
+                for (auto vectoriter = mapiter->second.begin(); vectoriter != mapiter->second.end(); vectoriter++)
+                {
+                    if (*iter == *vectoriter)
+                    {
+                        return true;
+                    }
+                }
+                mapiter->second.push_back(*iter);
             }
         }
+
         return false;
     }
+
 };
 // @lc code=end
 
