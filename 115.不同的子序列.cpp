@@ -7,32 +7,68 @@
 // @lc code=start
 class Solution {
 public:
-    // 递归实现。使用堆栈循环实现递归。迭代。
-    void recursion(string& s, string& t, int nowiter, int pointer, int& result)
-    {
-        if (nowiter == t.size())
+    // 时间复杂度较高，超时。未解决。
+    void Try(map<char, vector<int>>& assistant, string& t, int& count, int tier, int max){
+        if (tier == t.size())
         {
-            result++;
-            return ;
+            count++;
         }
-        for (; pointer < s.size(); pointer++)
+        else
         {
-            if (t.size() - nowiter > s.size() - pointer)
+            auto mapiter = assistant.find(t.at(tier));
+            if (mapiter == assistant.end())
             {
                 return ;
             }
-            if (s.at(pointer) == t.at(nowiter))
+            else
             {
-                recursion(s, t, nowiter + 1, pointer + 1, result);
+                for (int i = mapiter->second.size() - 1; i >= 0; i--)
+                {
+                    if (mapiter->second.at(i) > max)
+                    {
+                        Try(assistant, t, count, tier + 1, mapiter->second.at(i));
+                    }
+                    else
+                    {
+                        return ;
+                    }
+                }
             }
         }
     }
 
     int numDistinct(string s, string t) {
+        map<char, vector<int>> assistant;
+        for (auto iter = s.begin(); iter != s.end(); iter++)
+        {
+            int i = 0;
+            for (; i < t.size(); i++)
+            {
+                if (*iter == t.at(i))
+                {
+                    break;
+                }
+            }
+            if (i == t.size())
+            {
+                s.erase(iter);
+            }
+        }
+        for (int i = 0; i < s.size(); i++)
+        {
+            auto mapiter = assistant.find(s.at(i));
+            if (mapiter == assistant.end())
+            {
+                assistant.insert(pair<char, vector<int>>(s.at(i), {i}));
+            }
+            else
+            {
+                mapiter->second.push_back(i);
+            }
+        }
+        
         int result = 0;
-
-        recursion(s, t, 0, 0, result);
-
+        Try(assistant, t, result, 0, -1);
         return result;
     }
 };
