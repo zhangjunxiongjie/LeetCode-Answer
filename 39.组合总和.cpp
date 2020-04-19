@@ -4,31 +4,47 @@
  * [39] 组合总和
  */
 
+// 递归求解。
 // @lc code=start
-// 问题的关键在于如何确定某一个数的个数？
 class Solution {
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<vector<int>>& result = *new vector<vector<int>>;
+    void recursion(int& target, int sum, int flag, vector<vector<int>>& result, vector<int>& buffer, vector<int>& cache){
 
-        // 排序。
-        for (int i = 0; i < candidates.size(); i++)
+        if (sum == target)
         {
-            for (int j = i + 1; j < candidates.size(); j++)
+            result.push_back(cache);
+        }
+        else if(sum > target)
+        {    
+            return ;
+        }
+        else
+        {
+            for (int i = flag; i < buffer.size(); i++)
             {
-                if (candidates.at(i) > candidates.at(j))
-                {
-                    int middle = candidates.at(i);
-                    candidates.at(i) = candidates.at(j);
-                    candidates.at(j) = middle;
-                }
-                
+                cache.push_back(buffer.at(i));
+                recursion(target, sum + buffer.at(i), i, result, buffer, cache);
+                cache.pop_back();
             }
             
         }
+        
+    }
 
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>>& result = *new vector<vector<int>>;
 
-        // result.push_back(candidates);
+        vector<int> buffer(candidates);
+        while (!buffer.empty())
+        {
+            vector<int> cache; // ?
+            
+            cache.push_back(buffer.at(buffer.size() - 1));
+            recursion(target, buffer.at(buffer.size() - 1), 0, result, buffer, cache);
+
+            buffer.pop_back(); // 
+        }
+        
         return result;
     }
 };

@@ -4,11 +4,12 @@
  * [15] 三数之和
  */
 
+
+// 双指针法。提交通过但是时间效率依然不是很好。
 // @lc code=start
 class Solution {
 public:
-    // 有点难度不会啊，靠。
-    // 先排序。
+    // 排序。
     void sortint(vector<int>& nums) {
         for (auto iter = nums.begin(); iter != nums.end(); iter++)
         {
@@ -24,66 +25,65 @@ public:
         }
     }
 
-    typedef struct
-    {
-        int small;
-        int large;
-    }Dot;
-
     vector<vector<int>> threeSum(vector<int>& nums) {
         vector<vector<int>>& result = *new vector<vector<int>>;
-        vector<int> buffer(nums);
-        sortint(buffer);
+        
+        vector<int> buffer(nums); // 避免nums被改变。
+        sortint(buffer); // 排序。
 
-        map<int, vector<Dot>> employee;
-        for (int i = 0; i < buffer.size(); i++)
+        for (int now = 0; now < buffer.size(); )
         {
-            
-            for (int j = i + 1; j < buffer.size(); j++)
+            int left = now + 1;
+            int right = buffer.size() - 1;
+            while(left < right)
             {
-                int twosum = buffer.at(i) + buffer.at(j);
-                auto mapiter = employee.find(twosum);
-                Dot dot{ i, j };
-                if (mapiter == employee.end())
+                if (-buffer.at(now) == buffer.at(left) + buffer.at(right))
                 {
-                    vector<Dot> vecdot;
-                    vecdot.push_back(dot);
-                    employee.insert(pair<int, vector<Dot>>(twosum, vecdot));
-                }
-                else
-                {
-                    mapiter->second.push_back(dot);
-                }
-            }
-        }
+                    // 符合条件。
+                    vector<int> cache;
+                    cache.push_back(buffer.at(now));
+                    cache.push_back(buffer.at(left));
+                    cache.push_back(buffer.at(right));
+                    
+                    result.push_back(cache);
 
-        for (int i = 0; buffer.at(i) < 1; i++)
-        {
-            if (i != 0 && buffer.at(i - 1) == buffer.at(i))
-            {
-                continue;
-            }
-
-            int surplus = 0 - buffer.at(i); // 这里有可能溢出。
-            
-            auto mapiter = employee.find(surplus);
-            if (mapiter != employee.end())
-            {
-                for (auto iter = mapiter->second.begin(); iter != mapiter->second.end(); iter++)
-                {
-                    vector<int> vec;
-                    if (iter->small > i)
+                    // 去重。
+                    int cacheleft = buffer.at(left);
+                    int cacheright = buffer.at(right);
+                    while (left < right && (cacheleft == buffer.at(left) || cacheright == buffer.at(right)))
                     {
-                        vec.push_back(buffer.at(i));
-                        vec.push_back(buffer.at(iter->small));
-                        vec.push_back(buffer.at(iter->large));
-
-                        cout << buffer.at(i) << ":" << buffer.at(iter->small) << ":" << buffer.at(iter->large) << endl;
-                        result.push_back(vec);
+                        if (cacheleft == buffer.at(left))
+                        {
+                            left++;
+                        }
+                        if (cacheright == buffer.at(right))
+                        {
+                            right--;
+                        }
+                        
                     }
+                    
+                }
+                else if(-buffer.at(now) > buffer.at(left) + buffer.at(right))
+                {
+                    left++; // 双指针移动。
+                }
+                else if(-buffer.at(now) < buffer.at(left) + buffer.at(right))
+                {
+                    right--;
                 }
             }
+            
+            // 去重。
+            int cachenow = buffer.at(now);
+            while (now < buffer.size() && cachenow == buffer.at(now))
+            {
+                now++;
+            }
+            
         }
+        
+
         return result;
     }
 
