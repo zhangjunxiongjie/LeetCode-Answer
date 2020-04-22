@@ -8,70 +8,68 @@
 class Solution {
 public:
     // 递归实现，超时，超内存，结果还不准确。
-    // 生成组合。
-    void recursion(vector<vector<int>>& result, vector<int>& nums, vector<int>& buffer, int nowiter, int& sumiter, int pointer)
-    {
-        if (nowiter == sumiter)
-        {
-            result.push_back(buffer);
-            return ;
-        }
-        
-        for (; pointer < nums.size(); pointer++)
-        {
-            if (nums.size() - pointer < sumiter - nowiter )
-            {
-                return ;
-            }
-            
-            buffer.push_back(nums.at(pointer));
-            recursion(result, nums, buffer, nowiter + 1, sumiter, pointer + 1);
-            buffer.pop_back();
-        }
-        
-    }
-
+    // 递归改循环未解决，有点问题。
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         vector<vector<int>>& result = *new vector<vector<int>>;
         
-        // 先排序以便去重、
         for (int i = 0; i < nums.size(); i++)
         {
+            int min = i;
             for (int j = i + 1; j < nums.size(); j++)
             {
-                if (nums.at(i) > nums.at(j))
+                if (nums.at(min) > nums.at(j))
                 {
-                    int middle = nums.at(i);
-                    nums.at(i) = nums.at(j);
-                    nums.at(j) = middle;
+                    min = j;
                 }
             }
-        }
-
-        vector<int> buffer;
-        for (int i = 0; i <= nums.size(); i++)
-        {
-            recursion(result, nums, buffer, 0, i, 0);
+            int middle = nums.at(min);
+            nums.at(min) = nums.at(i);
+            nums.at(i) = middle;
         }
         
-        // 去重。 0 和 nums.size() 无须去重。
-        for (auto i = result.begin() + 1; i != result.end() - 1; i++)
+        vector<int> buffer;
+        result.push_back(buffer);
+        for (int i = 0; i < nums.size();)
         {
-            if (i->size() == (i + 1)->size())
+            buffer.push_back(nums.at(i));
+            result.push_back(buffer);
+
+            stack<int> heap;
+            heap.push(i + 1);
+
+            while (!heap.empty())
             {
-                int j = 0;
-                for (; j < i->size(); j++)
+                int flag = heap.top();
+                
+                if (flag == nums.size())
                 {
-                    if (i->at(j) != (i + 1)->at(j))
+                    buffer.pop_back();
+                    heap.pop();
+                }
+
+                for (int j = flag; j < nums.size();)
+                {
+                    buffer.push_back(nums.at(j));
+                    result.push_back(buffer);
+                    
+                    int save = j + 1;
+
+                    int inlastnum = nums.at(j);
+                    while (j < nums.size() && inlastnum == nums.at(j))
                     {
-                        break;
-                    }
+                        j++;
+                    }        
+                    
+                    heap.pop();
+                    heap.push(j);
+                    heap.push(save);
                 }
-                if (j == i->size())
-                {
-                    result.erase(i + 1);
-                    i--;
-                }
+            }
+            
+            int outlastnum = nums.at(i);
+            while (i < nums.size() && outlastnum == nums.at(i))
+            {
+                i++;
             }
         }
         
