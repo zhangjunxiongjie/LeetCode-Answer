@@ -16,7 +16,12 @@
  */
 class Solution {
 public:
+    // 迭代实现待实现。
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
 
+    }
+
+    /*
     // 递归实现，时间复杂度和空间复杂度较高。可以改为迭代。
     TreeNode* recursion(vector<int>& preorder, vector<int>& inorder){
         if (preorder.size() == 0)
@@ -79,6 +84,7 @@ public:
         
         return root;
     }
+    */
 };
 // @lc code=end
 
