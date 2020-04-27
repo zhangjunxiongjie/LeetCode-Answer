@@ -1,13 +1,3 @@
-
-
-# 转VS code后这个库用于直接存储提交文件  
-
------
-
------
-
----
-
 # C-Algorithm-driven-[leetcode](https://leetcode-cn.com/)  
 
 这个库是在做[力扣](https://leetcode-cn.com/)算法题时部分并不好做的题的一些测试程序（驱动程序）  
@@ -20,5 +10,6 @@
 5.力扣28题实现strStr（）  
 6.力扣17题电话号码的字母组合（未通过）
 
+## 转VS code后这个库用于直接存储提交文件  
 
 
