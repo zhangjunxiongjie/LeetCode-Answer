@@ -8,26 +8,27 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        map<int, int> assis; // 辅助字典
+        map<int, int> diction; // 辅助字典
+        vector<int> result; // 
         for (int i = 0; i < nums.size(); i++)
         {
             int middle = target - nums.at(i);
-            auto iter = assis.find(nums.at(i));
-            if (iter == assis.end())
+            auto iter = diction.find(nums.at(i));
+            if (iter == diction.end())
             {
-                assis.insert(pair<int, int> (middle, i));
+                diction.insert(pair<int, int> (middle, i));
             }
             else
             {
-                nums.clear();
-                nums.push_back(iter->second); // 
-                nums.push_back(i);
+                result.push_back(iter->second); // 
+                result.push_back(i);
                 break;
             }
-           
+            
         }
-        return nums;  
+        return result;  
     } 
+    
 };
 
 // @lc code=end
