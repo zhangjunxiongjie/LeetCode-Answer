@@ -9,30 +9,33 @@
 // @lc code=start
 class Solution {
 public:
-    // 排序。
-    void sortint(vector<int>& nums) {
-        for (auto iter = nums.begin(); iter != nums.end(); iter++)
-        {
-            for (auto iter1 = iter + 1; iter1 != nums.end(); iter1++)
-            {
-                if (*iter > * iter1)
-                {
-                    int middle = *iter;
-                    *iter = *iter1;
-                    *iter1 = middle;
-                }
-            }
-        }
-    }
-
+    // 空间复杂度和时间复杂度依然很高。
     vector<vector<int>> threeSum(vector<int>& nums) {
         vector<vector<int>>& result = *new vector<vector<int>>;
         
         vector<int> buffer(nums); // 避免nums被改变。
-        sortint(buffer); // 排序。
-
-        for (int now = 0; now < buffer.size(); )
+        sort(buffer.begin(), buffer.end()); // 排序。
+        
+        // 数组元素个数小于三个或者整个数组都大于零。无解。
+        if (buffer.size() < 3)
         {
+            return result;
+        }
+        else if (buffer.at(0) > 0)
+        {
+            return result;
+        }
+
+        // now 后面至少要有两个元素才有继续下去的必要。
+        for (int now = 0; now < buffer.size() - 2; )
+        {
+            // now 作为最左值如果大于零则无解。
+            if (buffer.at(now) > 0)
+            {
+                now++;
+                continue;
+            }
+            
             int left = now + 1;
             int right = buffer.size() - 1;
             while(left < right)
@@ -83,7 +86,6 @@ public:
             
         }
         
-
         return result;
     }
 
