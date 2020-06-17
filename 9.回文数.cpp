@@ -7,21 +7,21 @@
 // @lc code=start
 class Solution {
 public:
+    // 真狠儿！！！
     bool isPalindrome(int x) {
-        std::string str = std::to_string(x);
-
-        for (int strBegin = 0, strMiddle = str.size() / 2; strBegin <= strMiddle; strBegin++, strMiddle--)
+        if (x < 0)
         {
-            if (str.at(strBegin) != str.at(str.size() - strBegin - 1))
-            {
-                return false;
-            }
-            if (str.at(strMiddle) != str.at(str.size() - strMiddle - 1))
-            {
-                return false;
-            }
+            return false;
         }
-        return true;
+        
+        long int xVirtual = 0;
+        int xChange = x;
+        while (xChange != 0)
+        {
+            xVirtual = (xVirtual * 10) + (xChange % 10);
+            xChange = xChange / 10;
+        }
+        return (x == xVirtual);
     }
 };
 // @lc code=end
