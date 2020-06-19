@@ -7,37 +7,47 @@
 // @lc code=start
 class Solution {
 public:
-    bool isPalindrome(string s) {
-        // 字母大写转小写。
-        transform(s.begin(), s.end(), s.begin(), ::tolower);
-        for (int i = 0, j = s.size() - 1; i < j; i++, j--)
+    bool is_target_char(char& ch)
+    {
+        if ('A' <= ch && ch <= 'Z')
         {
-            // 找到下一个字母或数字
-            while (('a' > s.at(i) || s.at(i) > 'z') && ('0' > s.at(i) || s.at(i) > '9'))
+            ch = ch - 'A' + 'a';
+            return true;
+        }
+        else if(('a' <= ch && ch <= 'z') || ('0' <= ch && ch <= '9'))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    bool isPalindrome(string s) {
+        
+        for (int front = 0, behind = s.size() - 1; front < behind; )
+        {
+            while (front < behind && !is_target_char(s.at(front)))
             {
-                i++;
-                if (i >= j)
-                {
-                    break;
-                }
+                front++;
             }
-            while (('a' > s.at(j) || s.at(j) > 'z') && ('0' > s.at(j) || s.at(j) > '9'))
+            while (front < behind && !is_target_char(s.at(behind)))
             {
-                j--;
-                if (i >= j)
-                {
-                    break;
-                }
+                behind--;
             }
-            if (i >= j)
-            {
-                break;
-            }
-            else if (s.at(i) != s.at(j))
+
+            if (front < behind && s.at(front) != s.at(behind))
             {
                 return false;
             }
+            else
+            {
+                front++;
+                behind--;
+            }
+            
         }
+        
         return true;
     }
 };
