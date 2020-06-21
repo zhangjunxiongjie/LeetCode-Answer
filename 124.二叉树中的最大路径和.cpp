@@ -16,6 +16,46 @@
  */
 class Solution {
 public:
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+    int recursion(TreeNode* root, int& maxPathSum)
+    {
+        if (root == nullptr)
+        {
+            return 0;
+        }
+        else
+        {
+            int leftMaxPathSum = recursion(root->left, maxPathSum);
+            int rightMaxPathSum = recursion(root->right, maxPathSum);
+            
+            int presentMaxPathSum = max((leftMaxPathSum + root->val), (rightMaxPathSum + root->val));
+            presentMaxPathSum = max(presentMaxPathSum, root->val); // 可能的情况。
+
+            maxPathSum = max(maxPathSum, (leftMaxPathSum + rightMaxPathSum + root->val));
+            maxPathSum = max(maxPathSum, presentMaxPathSum); // 单边最大。
+            maxPathSum = max(maxPathSum, root->val); // 解决负数问题。
+            
+            return presentMaxPathSum;
+        }
+    }
+    int maxPathSum(TreeNode* root) {
+        int maxPathSum = INT_MIN;
+        
+        recursion(root, maxPathSum);
+
+        return maxPathSum;
+    }
+
+    /*
     // 对子树多次求解应该从下往上减少计算量。
     // 递归求解时间复杂度和空间复杂度较差。
     int recursion(TreeNode* root, bool sign){
@@ -93,6 +133,8 @@ public:
         }
         return result;
     }
+    */
+    
 };
 // @lc code=end
 
