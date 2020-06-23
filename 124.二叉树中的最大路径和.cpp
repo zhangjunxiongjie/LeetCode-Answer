@@ -32,8 +32,7 @@ public:
             presentMaxPathSum = max(presentMaxPathSum, root->val); // 可能的情况。
 
             maxPathSum = max(maxPathSum, (leftMaxPathSum + rightMaxPathSum + root->val));
-            maxPathSum = max(maxPathSum, presentMaxPathSum); // 单边最大。
-            maxPathSum = max(maxPathSum, root->val); // 解决负数问题。
+            maxPathSum = max(maxPathSum, presentMaxPathSum); // 解决单边最大或可能的分支负数问题。
             
             return presentMaxPathSum;
         }
