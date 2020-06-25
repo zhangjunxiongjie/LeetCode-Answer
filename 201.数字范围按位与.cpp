@@ -7,24 +7,16 @@
 // @lc code=start
 class Solution {
 public:
-    // 超时。
+    // 牛逼的算法思维。
     int rangeBitwiseAnd(int m, int n) {
-        if (m == INT_MAX)
+        int zeroCount = 0;
+        while (n != m)
         {
-            return m;
+            n = n >> 1;
+            m = m >> 1;
+            zeroCount++;
         }
-        
-        int result = m;
-        // 当n == INT_MAX时加一变成INT_MIN依然不会退出循环。 
-        for (int i = m + 1; i <= n; i++)
-        {
-            result = result & i;
-            if (result == 0 || i == INT_MAX) 
-            {
-                break;
-            }
-        }
-        return result;
+        return (m << zeroCount);
     }
 };
 
