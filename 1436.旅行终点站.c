@@ -9,18 +9,32 @@
 
 char * destCity(char *** paths, int pathsSize, int* pathsColSize){
     
-    char *cacheVector = malloc (sizeof (char) * pathsSize);
-    
-    memset(cacheVector, 0, (sizeof (char) * pathsSize));
+    char *target = paths[0][1];
 
-    for (int i = 0; i < pathsSize; i++) {
-
+    while (true) {
         
-    }
+        bool flag = true;
 
-//    printf ("%d, %d\n", pathsSize, (*pathsColSize));
+        for (char ***pathsPointer = paths; pathsPointer < (paths + pathsSize); pathsPointer++) {
+            
+            // printf("%s\n", (*pathsPointer)[0]);
+            
+            if (0 == strcmp((*pathsPointer)[0], target)) {
+                
+                flag = false;
+                target = (*pathsPointer)[1];
+                break;
+            }
+            
+        }
+
+        if (flag) {
+
+            break;
+        }
+    }
     
-    return NULL;
+    return target;
 }
 
 // @lc code=end
